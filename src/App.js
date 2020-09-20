@@ -24,13 +24,18 @@ class App extends Component {
           long
         },
         description
-      }
+      };
     })
 
     this.setState({
       markers: markers
     })
   }
+
+  handleMarkerClick(marker) {
+    console.log(marker)
+  }
+
   componentDidMount() {
     this.getMarkerData();
   }
@@ -61,9 +66,15 @@ class App extends Component {
               marker.coordinates.long
             ]}
             // onClick={() => {
-            //   setActivePark(park);
+            //   this.handleMarkerClick(marker);
             // }}
-          />
+          >
+            <Popup>
+              <h3>{marker.title}</h3>
+              <img src={marker.img} alt={marker.title} />
+              <p>{marker.description}</p>
+            </Popup>
+          </Marker>
         ))}
 
         <TileLayer
