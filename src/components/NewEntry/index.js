@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Marker } from 'react-leaflet';
 import { loadData } from '../GS';
+import ImageUploader from '../ImageUploader'
 
 export const NewMarker = props => {
     const initMarker = ref => {
@@ -40,6 +41,7 @@ export const NewEntryForm = props => {
             </select>
             <input type="text" placeholder="Titlu"></input>
             <textarea placeholder="Descriere..."></textarea>
+            <ImageUploader/>
         </>
     )
 

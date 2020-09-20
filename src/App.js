@@ -8,7 +8,9 @@ import './App.css';
 class App extends Component {
   state = {
     markers: [],
-    newMarker: null
+    newMarker: null,
+    uploading: false,
+    images: []
   }
 
   async getMarkerData() {
