@@ -1,19 +1,22 @@
 import React, {Component} from 'react';
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { loadData, saveData } from './components/GS';
+import { NewMarker, NewEntryForm } from './components/NewEntry';
 import './App.css';
 
 //https://blog.logrocket.com/how-to-use-react-leaflet/
-
 class App extends Component {
   state = {
-    markers: []
+    markers: [],
+    newMarker: null,
+    uploading: false,
+    images: []
   }
 
   async getMarkerData() {
-    const rows = await loadData();
+    const rows = await loadData('entries');
     const markers = rows.filter(row => parseInt(row.active)).map(row => {
-      const { active, id, title, img, lat, long, description } = row;
+      const { active, id, title, img, lat, lng, description } = row;
       return {
         active,
         id,
@@ -21,16 +24,29 @@ class App extends Component {
         img,
         coordinates: {
           lat,
-          long
+          lng
         },
         description
-      }
+      };
     })
 
     this.setState({
       markers: markers
     })
   }
+
+  handleMapClick(e) {
+    const newMarker = {
+      coordinates: {
+        lat: e.latlng.lat,
+        lng: e.latlng.lng
+      }
+    }
+
+    this.setState({newMarker});
+    
+  }
+
   componentDidMount() {
     this.getMarkerData();
   }
@@ -42,7 +58,7 @@ class App extends Component {
   //   img: 'img source',
   //   coordinates: {
   //     lat: 234,
-  //     long: 45678
+  //     lng: 45678
   //   },
   //   description: 'Lorem Ipsum'
   // }
@@ -50,21 +66,29 @@ class App extends Component {
   //saveData(entry)
 
   render() {
-    const { markers } = this.state;
+    const { markers, newMarker } = this.state;
     return (
-      <Map center={[45.270340, 25.050310]} zoom={13}>
-        {markers.map(marker => (
+      <Map center={[45.270340, 25.050310]} zoom={13} onClick={(e) => {
+        this.handleMapClick(e)
+      }}>
+        { markers.map(marker => (
           <Marker
             key={marker.id}
-            position={[
-              marker.coordinates.lat,
-              marker.coordinates.long
-            ]}
-            // onClick={() => {
-            //   setActivePark(park);
-            // }}
-          />
-        ))}
+            position={marker.coordinates}
+          >
+            <Popup>
+              <h3>{marker.title}</h3>
+              <img src={marker.img} alt={marker.title} />
+              <p>{marker.description}</p>
+            </Popup>
+          </Marker>
+        )) }
+
+        { newMarker && <NewMarker position={newMarker.coordinates}>
+            <Popup position={newMarker.coordinates}>
+              <NewEntryForm />
+            </Popup>
+          </NewMarker> }
 
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
