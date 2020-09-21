@@ -16,11 +16,12 @@ class App extends Component {
   async getMarkerData() {
     const rows = await loadData('entries');
     const markers = rows.filter(row => parseInt(row.active)).map(row => {
-      const { active, id, title, img, lat, lng, description } = row;
+      const { active, id, title, category, img, lat, lng, description } = row;
       return {
         active,
         id,
         title,
+        category,
         img,
         coordinates: {
           lat,
@@ -51,20 +52,6 @@ class App extends Component {
     this.getMarkerData();
   }
 
-  // const entry = {
-  //   active: 0,
-  //   id: 'UUID',
-  //   title: 'Title here',
-  //   img: 'img source',
-  //   coordinates: {
-  //     lat: 234,
-  //     lng: 45678
-  //   },
-  //   description: 'Lorem Ipsum'
-  // }
-
-  //saveData(entry)
-
   render() {
     const { markers, newMarker } = this.state;
     return (
@@ -78,6 +65,7 @@ class App extends Component {
           >
             <Popup>
               <h3>{marker.title}</h3>
+              <h4>{marker.category}</h4>
               <img src={marker.img} alt={marker.title} />
               <p>{marker.description}</p>
             </Popup>
@@ -86,7 +74,7 @@ class App extends Component {
 
         { newMarker && <NewMarker position={newMarker.coordinates}>
             <Popup position={newMarker.coordinates}>
-              <NewEntryForm />
+              <NewEntryForm position={newMarker.coordinates}/>
             </Popup>
           </NewMarker> }
 

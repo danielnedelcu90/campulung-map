@@ -4,11 +4,12 @@ import { fetchPhotos, openUploadWidget } from './CloudinaryService'
 
 const ImageUploader = () => {
     const [images, setImages] = useState([]);
+    const cloudinaryUrl = 'https://res.cloudinary.com/durbvhf8g/image/upload/v1/';
 
-    const beginUpload = tag => {
+    const beginUpload = (e) => {
+        e.preventDefault();
         const uploadOptions = {
             cloudName: "durbvhf8g",
-            tags: [tag],
             uploadPreset: "lj0cilml"
         };
         
@@ -24,15 +25,16 @@ const ImageUploader = () => {
             }
         })
     }
-
+    
     return (
         <CloudinaryContext cloudName="durbvhf8g">
             <div className="Upload">
-                <button onClick={() => beginUpload()}>Incarcare imagine</button>
+                <button onClick={(e) => beginUpload(e)}>Incarcare imagine</button>
                 <section>
-                    {images.map(i => <img key={i} src={i} alt="" />)}
+                    <img key={images[0]} src={`${cloudinaryUrl}${images[0]}.png`} alt="" />
                 </section>
             </div>
+            <input type="hidden" name="img" value={`${cloudinaryUrl}${images[0]}.png`}></input>
         </CloudinaryContext>
     )
 }

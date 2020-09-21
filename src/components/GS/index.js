@@ -12,7 +12,7 @@ const PRIVATE_KEY = '-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAA
 export const saveData = (entry) => {
     const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
-    const {active, id, title, img, lat, lng, description } = entry;
+    const {active, id, title, category, img, lat, lng, description } = entry;
     
     const appendSpreadsheet = async (row) => {
       try {
@@ -35,6 +35,7 @@ export const saveData = (entry) => {
         active,
         id,
         title,
+        category,
         img,
         lat,
         lng,
