@@ -30,11 +30,15 @@ const ImageUploader = () => {
         <CloudinaryContext cloudName="durbvhf8g">
             <div className="Upload">
                 <button onClick={(e) => beginUpload(e)}>Incarcare imagine</button>
-                <section>
-                    <img key={images[0]} src={`${cloudinaryUrl}${images[0]}.png`} alt="" />
-                </section>
+                {images[0] && (
+                    <section>
+                        <img key={images[0]} src={`${cloudinaryUrl}${images[0]}.png`} alt="" />
+                    </section>
+                )}
             </div>
-            <input type="hidden" name="img" value={`${cloudinaryUrl}${images[0]}.png`}></input>
+            {images[0] && (
+                <input type="hidden" name="img" value={`${cloudinaryUrl}${images[0]}.png`}></input>
+            )}
         </CloudinaryContext>
     )
 }

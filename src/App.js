@@ -44,6 +44,7 @@ class App extends Component {
       }
     }
 
+    this.setState({newMarker: null});
     this.setState({newMarker});
     
   }
