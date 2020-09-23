@@ -28,12 +28,12 @@ const ImageUploader = () => {
     
     return (
         <CloudinaryContext cloudName="durbvhf8g">
-            <div className="Upload">
-                <button onClick={(e) => beginUpload(e)}>Incarcare imagine</button>
+            <div className={`Upload ${images[0] && 'Upload--success'}`}>
+                <button className="form-view__btn form-view__btn--upload" onClick={(e) => beginUpload(e)}>Incarcare imagine</button>
                 {images[0] && (
-                    <section>
+                    <div className="form-view__img">
                         <img key={images[0]} src={`${cloudinaryUrl}${images[0]}.png`} alt="" />
-                    </section>
+                    </div>
                 )}
             </div>
             {images[0] && (

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { loadData, saveData } from './components/GS';
+import { Header } from './components/Header';
 import { NewMarker, NewEntryForm } from './components/NewEntry';
-import './App.css';
+import './App.scss';
 
 //https://blog.logrocket.com/how-to-use-react-leaflet/
 class App extends Component {
@@ -56,34 +57,42 @@ class App extends Component {
   render() {
     const { markers, newMarker } = this.state;
     return (
-      <Map center={[45.270340, 25.050310]} zoom={13} onClick={(e) => {
-        this.handleMapClick(e)
-      }}>
-        { markers.map(marker => (
-          <Marker
-            key={marker.id}
-            position={marker.coordinates}
-          >
-            <Popup>
-              <h3>{marker.title}</h3>
-              <h4>{marker.category}</h4>
-              <img src={marker.img} alt={marker.title} />
-              <p>{marker.description}</p>
-            </Popup>
-          </Marker>
-        )) }
+      <>
+        <Header/>
+        <Map center={[45.270340, 25.050310]} zoom={14} minZoom={12} scrollWheelZoom={false} onClick={(e) => {
+          this.handleMapClick(e)
+        }}>
+          { markers.map(marker => (
+            <Marker
+              key={marker.id}
+              riseOnHover={true}
+              position={marker.coordinates}
+            >
+              <Popup>
+                <div class="marker-view">
+                  <span className="marker-view__category">{marker.category}</span>
+                  <h3 className="marker-view__title">{marker.title}</h3>
+                  <div className="marker-view__img">
+                    <img src={marker.img} alt={marker.title} />
+                  </div>
+                  <p className="marker-view__description">{marker.description}</p>
+                </div>
+              </Popup>
+            </Marker>
+          )) }
 
-        { newMarker && <NewMarker position={newMarker.coordinates}>
-            <Popup position={newMarker.coordinates}>
-              <NewEntryForm position={newMarker.coordinates}/>
-            </Popup>
-          </NewMarker> }
-
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-      </Map>
+          { newMarker && <NewMarker position={newMarker.coordinates}>
+              <Popup position={newMarker.coordinates}>
+                <NewEntryForm position={newMarker.coordinates}/>
+              </Popup>
+            </NewMarker> }
+            
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+        </Map>
+      </>
     );
   }
 }

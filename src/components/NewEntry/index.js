@@ -3,6 +3,7 @@ import uuid from 'react-uuid';
 import { Marker } from 'react-leaflet';
 import { loadData, saveData } from '../GS';
 import ImageUploader from '../ImageUploader'
+import Select from "react-dropdown-select";
 
 export const NewMarker = props => {
     const initMarker = ref => {
@@ -23,7 +24,7 @@ export const NewEntryForm = props => {
             const { categories } = row;
             return categories
         })
-        
+
         setCategories(categories);
     }
 
@@ -54,7 +55,7 @@ export const NewEntryForm = props => {
                 style={{display: inputsView ? 'flex' : 'none'}}
                 className="form-view form-view--inputs"
                 >
-                <select name="category">
+                <select className="form-view__select" name="category">
                     { entryCategories && entryCategories.map((category, index) => {
                         return (
                             <option key={index} value={category}>{category}</option>
@@ -62,12 +63,12 @@ export const NewEntryForm = props => {
                         }) }
                     <option value="Alege categoria">Alege categoria</option>
                 </select>
-                <input name="title" type="text" placeholder="Subiect"></input>
-                <textarea name="description" placeholder="Descriere..."></textarea>
+                <input className="form-view__input" name="title" type="text" placeholder="Subiect"></input>
+                <textarea className="form-view__textarea" name="description" placeholder="Descriere..."></textarea>
                 <input type="hidden" name="lat" value={lat}></input>
                 <input type="hidden" name="lng" value={lng}></input>
                 <ImageUploader/>
-                <button>Submit</button>
+                <button className="form-view__btn form-view__btn--submit">Submit</button>
             </div>
             <div 
                 style={{display: inputsView ? 'none' : 'flex'}}
