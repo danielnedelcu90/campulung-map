@@ -1,8 +1,8 @@
 export const filterTaskList = (list, filters) => {
-    const entries = Object.entries(Object.assign(...filters))
+    const filterNames = Object.keys(filters)
     return list.filter(task => {
-      return entries.every(([key, val]) => {
-        return task[key] === val
+      return filterNames.every(filter => {
+        return filters[filter].active ? task[filter] === filters[filter].active : 1
       })
     })
   }

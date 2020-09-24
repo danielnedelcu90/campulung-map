@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { loadData, saveData } from '../../components/GS';
-import { Header } from '../../components/Header';
+import Header from '../../components/Header';
+import ControlBar from '../../components/ControlBar';
 import { NewMarker, NewEntryForm } from '../../components/NewEntry';
 import { filterTaskList } from '../../utilities/helper.js';
 import './App.scss';
@@ -12,11 +13,18 @@ import './App.scss';
 class App extends Component {
   state = {
     markers: [],
-    filters: [
-      {
-        category: 'Categoria 1'
+    filters: {
+      category: {
+        active: null,
+        placeholder: 'Selecteaza categoria',
+        options: ['Categoria 1', 'Categoria 2']
+      },
+      urgency: {
+        active: null,
+        placeholder: 'Selecteaza prioritatea',
+        options: ['Low', 'High']
       }
-    ],
+    },
     newMarker: null,
     uploading: false,
     images: []
@@ -55,7 +63,22 @@ class App extends Component {
 
     this.setState({newMarker: null});
     this.setState({newMarker});
-    
+  }
+
+  handleOnSelect({value}, filter) {
+
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        filters: {
+          ...prevState.filters,
+          [filter]: {
+            ...prevState.filters[filter],
+            active: value
+          }
+        }
+      }
+    })
   }
 
   componentDidMount() {
@@ -68,12 +91,12 @@ class App extends Component {
 
     return (
       <>
-        <Header/>
+        <Header />
+        <ControlBar filters={filters} onSelect={(value, filter) => this.handleOnSelect(value, filter)}/>
         <Map center={[45.270340, 25.050310]} zoom={14} minZoom={12} scrollWheelZoom={false} onClick={(e) => {
           this.handleMapClick(e)
         }}>
-          {/* { markers.filter(marker => filters.forEach(filter => marker[filter.name] === filter.value)).map(marker => ( */}
-          { filteredMarkers.filter(marker => marker[filters[0].name] === filters[0].value).map(marker => (
+          { filteredMarkers.map(marker => (
             <Marker
               key={marker.id}
               riseOnHover={true}

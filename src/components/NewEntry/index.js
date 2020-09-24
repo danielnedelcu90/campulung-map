@@ -3,7 +3,6 @@ import uuid from 'react-uuid';
 import { Marker } from 'react-leaflet';
 import { loadData, saveData } from '../GS';
 import ImageUploader from '../ImageUploader'
-import Select from "react-dropdown-select";
 
 export const NewMarker = props => {
     const initMarker = ref => {
