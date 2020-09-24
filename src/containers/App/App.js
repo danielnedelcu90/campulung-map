@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import { loadData, saveData } from '../../components/GS';
+import { loadData } from '../../components/GS';
 import Header from '../../components/Header';
 import ControlBar from '../../components/ControlBar';
 import { NewMarker, NewEntryForm } from '../../components/NewEntry';
@@ -17,11 +17,13 @@ class App extends Component {
       category: {
         active: null,
         placeholder: 'Selecteaza categoria',
-        options: ['Categoria 1', 'Categoria 2']
+        dynamicOptions: true,
+        options: []
       },
-      urgency: {
+      title: {
         active: null,
         placeholder: 'Selecteaza prioritatea',
+        dynamicOptions: false,
         options: ['Low', 'High']
       }
     },
@@ -48,9 +50,9 @@ class App extends Component {
       };
     })
 
-    this.setState({
-      markers: markers
-    })
+    this.setState({markers})
+
+    this.setFilterOptions();
   }
 
   handleMapClick(e) {
@@ -65,8 +67,37 @@ class App extends Component {
     this.setState({newMarker});
   }
 
-  handleOnSelect({value}, filter) {
+  setFilterOptions() {
+    const { markers, filters } = this.state;
 
+    const markerKeys = Object.keys(markers[0]);
+    const filterKeys = Object.keys(filters);
+
+    const activeFilters = markerKeys.filter(mk => filterKeys.includes(mk));
+
+    activeFilters.forEach(filter => {
+      const options = [
+        ...new Set(
+          markers.map(marker => marker[filter])
+        )
+      ]
+      
+      filters[filter].dynamicOptions && this.setState(prevState => {
+        return {
+          ...prevState,
+          filters: {
+            ...prevState.filters,
+            [filter]: {
+              ...prevState.filters[filter],
+              options
+            }
+          }
+        }
+      })
+    })
+  }
+
+  handleOnSelect({value}, filter) {
     this.setState(prevState => {
       return {
         ...prevState,

@@ -17,7 +17,7 @@ export const NewEntryForm = props => {
     const [inputsView, setInputsView] = useState(1);
     const { lat, lng } = props.position;
 
-    const getMarkerData = async () => {
+    const getCategoriesData = async () => {
         const rows = await loadData('categories');
         const categories = rows.map(row => {
             const { categories } = row;
@@ -27,7 +27,7 @@ export const NewEntryForm = props => {
         setCategories(categories);
     }
 
-    useEffect(() => {getMarkerData()}, [])
+    useEffect(() => {getCategoriesData()}, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
