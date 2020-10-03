@@ -1,7 +1,13 @@
 .Header {
     text-align: center;
+    padding: 1rem .5rem;
 
     h1 {
         font-size: 2rem;
+        margin-bottom: .25rem;
+    }
+
+    h2 {
+        font-weight: 200;
     }
 }

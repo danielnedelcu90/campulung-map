@@ -57,7 +57,7 @@ export const loadData = (targetSheet) => {
           // loads document properties and worksheets
           await doc.loadInfo();
       
-          const sheet = targetSheet == 'entries' ? doc.sheetsById[ENTRIES_SHEET_ID] : doc.sheetsById[CATEGORIES_SHEET_ID];
+          const sheet = targetSheet === 'entries' ? doc.sheetsById[ENTRIES_SHEET_ID] : doc.sheetsById[CATEGORIES_SHEET_ID];
           return await sheet.getRows();
 
         } catch (e) {

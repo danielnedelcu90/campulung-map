@@ -16,16 +16,17 @@ class App extends Component {
     filters: {
       category: {
         active: null,
+        tabs: true,
         placeholder: 'Selecteaza categoria',
-        dynamicOptions: true,
+        dynamicOptions: false,
         options: []
       },
-      title: {
-        active: null,
-        placeholder: 'Selecteaza prioritatea',
-        dynamicOptions: false,
-        options: ['Low', 'High']
-      }
+      // title: {
+      //   active: null,
+      //   placeholder: 'Selecteaza prioritatea',
+      //   dynamicOptions: false,
+      //   options: ['Low', 'High']
+      // }
     },
     newMarker: null,
     uploading: false,
@@ -55,7 +56,37 @@ class App extends Component {
     this.setFilterOptions();
   }
 
+  async getCategoriesData() {
+    const rows = await loadData('categories') || [];
+
+    const options = [
+      ...new Set(
+        rows.map(row => {
+          const { categories, icons } = row;
+          return {
+            value : categories,
+            icon: icons
+          }
+        })
+      )
+    ];
+
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        filters: {
+          ...prevState.filters,
+          category: {
+            ...prevState.filters.category,
+            options : options
+          }
+        }
+      }
+    })
+}
+
   handleMapClick(e) {
+    //TODO: go to map center
     const newMarker = {
       coordinates: {
         lat: e.latlng.lat,
@@ -98,6 +129,7 @@ class App extends Component {
   }
 
   handleOnSelect({value}, filter) {
+    console.log(value)
     this.setState(prevState => {
       return {
         ...prevState,
@@ -114,6 +146,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getMarkerData();
+    this.getCategoriesData();
   }
 
   render() {
@@ -121,7 +154,7 @@ class App extends Component {
     const filteredMarkers = filterTaskList(markers, filters);
 
     return (
-      <>
+      <div className="Body">
         <Header />
         <ControlBar filters={filters} onSelect={(value, filter) => this.handleOnSelect(value, filter)}/>
         <Map center={[45.270340, 25.050310]} zoom={14} minZoom={12} scrollWheelZoom={false} onClick={(e) => {
@@ -130,7 +163,6 @@ class App extends Component {
           { filteredMarkers.map(marker => (
             <Marker
               key={marker.id}
-              riseOnHover={true}
               position={marker.coordinates}
             >
               <Popup>
@@ -148,7 +180,7 @@ class App extends Component {
 
           { newMarker && <NewMarker position={newMarker.coordinates}>
               <Popup position={newMarker.coordinates}>
-                <NewEntryForm position={newMarker.coordinates}/>
+                <NewEntryForm position={newMarker.coordinates} categories={filters.category.options}/>
               </Popup>
             </NewMarker> }
             
@@ -157,7 +189,7 @@ class App extends Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
         </Map>
-      </>
+      </div>
     );
   }
 }

@@ -13,21 +13,9 @@ export const NewMarker = props => {
 }
 
 export const NewEntryForm = props => {
-    const [entryCategories, setCategories] = useState();
     const [inputsView, setInputsView] = useState(1);
     const { lat, lng } = props.position;
-
-    const getCategoriesData = async () => {
-        const rows = await loadData('categories');
-        const categories = rows.map(row => {
-            const { categories } = row;
-            return categories
-        })
-
-        setCategories(categories);
-    }
-
-    useEffect(() => {getCategoriesData()}, [])
+    const { categories } = props;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -55,9 +43,10 @@ export const NewEntryForm = props => {
                 className="form-view form-view--inputs"
                 >
                 <select className="form-view__select" name="category">
-                    { entryCategories && entryCategories.map((category, index) => {
+                    { categories && categories.map(category => {
+                        const { name } = category;
                         return (
-                            <option key={index} value={category}>{category}</option>
+                            <option key={name} value={name}>{name}</option>
                             );
                         }) }
                     <option value="Alege categoria">Alege categoria</option>

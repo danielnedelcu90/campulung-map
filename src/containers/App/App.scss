@@ -25,9 +25,29 @@ img {
   width: 100%;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.Body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .leaflet-container {
   width: 100%;
   height: 100vh;
+
+  .leaflet-left {
+    left: auto;
+    right: .5rem;
+  }
+
+  .leaflet-top {
+    top: auto;
+    bottom: 1.5rem;
+  }
 }
 
 .leaflet-popup-content {
@@ -108,6 +128,51 @@ img {
       width: auto;
       margin-left: auto;
       margin-right: auto;
+    }
+  }
+}
+
+.ControlBar {
+  &__filters {
+    position: relative;
+  }
+
+  &__tabs {
+    position: absolute;
+    top: 10px;
+    z-index: 999;
+    display: flex;
+    overflow: auto;
+    width: calc(100% - 1rem);
+    padding-left: .5rem;
+    padding-right: .5rem;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+
+  }
+  &__tab {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    background: #fff;
+    margin: 0 .4rem;
+    padding: .5rem 1rem;
+    font-size: 14px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    span {
+      margin-left: .5rem;
+      font-weight: 300;
+    }
+
+    &.active {
+      background: #257dc9;
+      color: #fff;
+      transition: .1s ease;
     }
   }
 }

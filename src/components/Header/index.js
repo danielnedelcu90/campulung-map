@@ -5,8 +5,8 @@ const header = props => {
     return (
         <section className="Header">
             <div className="HeaderEntry">
-                <h1>Harta probleme Campulung</h1>
-                <h2>Punct cu punct ne facem bine</h2>
+                <h1>Campulung Muscel</h1>
+                <h2>Centralizare probleme / solutii</h2>
             </div>
         </section>
     )
